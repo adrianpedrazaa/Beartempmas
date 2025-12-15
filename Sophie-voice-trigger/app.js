@@ -1,4 +1,3 @@
-// --- DOM ---
 const startBtn = document.getElementById("startBtn");
 const stopBtn = document.getElementById("stopBtn");
 const statusText = document.getElementById("statusText");
@@ -13,16 +12,16 @@ const SpeechRecognition =
 let recognition = null;
 let listening = false;
 
-// Normalize "Sophie!" detection: ignore punctuation/case
+
 function containsSophie(phrase) {
-  // Lowercase + remove punctuation-ish
+  
   const clean = phrase
     .toLowerCase()
     .replace(/[^\p{L}\p{N}\s]/gu, " ")
     .replace(/\s+/g, " ")
     .trim();
 
-  // Match the word "sophie" as a standalone word
+  
   return /\bsophie\b/.test(clean);
 }
 
@@ -36,7 +35,7 @@ function setHeard(text) {
 
 function playAnimation() {
   orb.classList.remove("play");
-  // reflow to restart animation if triggered rapidly
+  
   void orb.offsetWidth;
   orb.classList.add("play");
 }
@@ -46,7 +45,7 @@ function setupRecognition() {
 
   const r = new SpeechRecognition();
   r.continuous = true;
-  r.interimResults = true; // helps show partial speech
+  r.interimResults = true; 
   r.lang = "en-US";
 
   r.onstart = () => {
@@ -72,7 +71,7 @@ function setupRecognition() {
   };
 
   r.onresult = (event) => {
-    // Build a readable transcript from results
+    
     let transcript = "";
     for (let i = event.resultIndex; i < event.results.length; i++) {
       transcript += event.results[i][0].transcript;
@@ -80,8 +79,8 @@ function setupRecognition() {
     transcript = transcript.trim();
     if (transcript) setHeard(transcript);
 
-    // Trigger on final OR interim (your choice)
-    // Here: trigger even on interim so it feels snappy
+    
+    
     if (containsSophie(transcript)) {
       playAnimation();
     }
@@ -101,9 +100,9 @@ function startListening() {
   if (!recognition) recognition = setupRecognition();
 
   try {
-    recognition.start(); // must be called from user gesture (button click)
+    recognition.start(); 
   } catch (err) {
-    // This can throw if called twice quickly
+    
     setStatus("Already listening (or blocked).");
   }
 }
@@ -114,11 +113,11 @@ function stopListening() {
   }
 }
 
-// --- Wire up buttons ---
+
 startBtn.addEventListener("click", startListening);
 stopBtn.addEventListener("click", stopListening);
 
-// Initial hint
+
 setStatus("Idle");
 hintText.textContent =
   "Tip: Mic access usually requires https or localhost. Use a local server instead of opening the file directly.";

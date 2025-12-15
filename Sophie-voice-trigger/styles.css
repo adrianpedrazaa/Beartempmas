@@ -47,7 +47,7 @@ h1 { margin: 0 0 10px; font-size: clamp(28px, 4vw, 44px); }
   transform: translateZ(0);
 }
 
-/* Triggered animation */
+
 .orb.play {
   animation: sophieBurst 900ms ease-in-out 1;
 }
@@ -101,10 +101,23 @@ body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: url("assets/fireplace.gif") center / cover no-repeat;
-  image-rendering: pixelated; /* keeps pixel art crisp-ish */
-  opacity: 0.35;             /* adjust to taste */
-  filter: blur(0px);         /* optional */
+  background: url("assets/background.gif") center / cover no-repeat;
+  background-size: contain;
+  image-rendering: pixelated; 
+  opacity: 0.35;             
+  filter: blur(0px);         
   z-index: -1;
   pointer-events: none;
 }
+
+.bg-present {
+  position: fixed;
+  width: 420px;     /* size */
+  height: 420px;
+  right: 760px;      /* position */
+  bottom: -60px;
+  object-fit: contain;
+  z-index: 0;       
+  pointer-events: none;
+}
+.wrap { position: relative; z-index: 1; } 
