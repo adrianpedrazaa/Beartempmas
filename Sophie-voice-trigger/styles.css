@@ -104,7 +104,7 @@ body::before {
   background: url("assets/background.gif") center / cover no-repeat;
   background-size: contain;
   image-rendering: pixelated; 
-  opacity: 0.35;             
+  opacity: 1;             
   filter: blur(0px);         
   z-index: -1;
   pointer-events: none;
