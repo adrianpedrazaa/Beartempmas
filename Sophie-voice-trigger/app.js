@@ -1,43 +1,39 @@
-const startBtn = document.getElementById("startBtn");
-const stopBtn = document.getElementById("stopBtn");
-const statusText = document.getElementById("statusText");
-const heardText = document.getElementById("heardText");
-const hintText = document.getElementById("hintText");
-const orb = document.getElementById("orb");
-
-// --- SpeechRecognition support (Chrome/Edge) ---
 const SpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
+
+const bgMusic = document.getElementById("bgMusic");
+const message = document.getElementById("message"); 
 
 let recognition = null;
 let listening = false;
 
-
 function containsSophie(phrase) {
-  
   const clean = phrase
     .toLowerCase()
     .replace(/[^\p{L}\p{N}\s]/gu, " ")
     .replace(/\s+/g, " ")
     .trim();
-
   
   return /\bsophie\b/.test(clean);
 }
 
-function setStatus(text) {
-  statusText.textContent = text;
-}
-
-function setHeard(text) {
-  heardText.textContent = text || "—";
-}
-
 function playAnimation() {
-  orb.classList.remove("play");
+  if (document.body.classList.contains("Trigger") || document.body.classList.contains("Active")) {
+    return;
+  }
+
   
-  void orb.offsetWidth;
-  orb.classList.add("play");
+  document.body.classList.add("Trigger");
+
+  
+  setTimeout(() => {
+    document.body.classList.remove("Trigger");
+    document.body.classList.add("Active");
+    
+    
+    if (message) message.classList.add("show");
+    
+  }, 1000); 
 }
 
 function setupRecognition() {
@@ -50,36 +46,24 @@ function setupRecognition() {
 
   r.onstart = () => {
     listening = true;
-    setStatus("Listening…");
-    hintText.textContent = "Mic is on. Say “Sophie!”";
-    startBtn.disabled = true;
-    stopBtn.disabled = false;
+    console.log("Listening started...");
   };
 
   r.onend = () => {
     listening = false;
-    setStatus("Stopped");
-    hintText.textContent = "";
-    startBtn.disabled = false;
-    stopBtn.disabled = true;
+    console.log("Listening stopped. Restarting...");
+    if (recognition) recognition.start();
   };
 
   r.onerror = (e) => {
-    setStatus(`Error: ${e.error}`);
-    hintText.textContent =
-      "If this keeps happening, run the site on https or localhost and allow mic permission.";
+    console.error("Speech recognition error", e.error);
   };
 
   r.onresult = (event) => {
-    
     let transcript = "";
     for (let i = event.resultIndex; i < event.results.length; i++) {
       transcript += event.results[i][0].transcript;
     }
-    transcript = transcript.trim();
-    if (transcript) setHeard(transcript);
-
-    
     
     if (containsSophie(transcript)) {
       playAnimation();
@@ -91,33 +75,25 @@ function setupRecognition() {
 
 function startListening() {
   if (!SpeechRecognition) {
-    setStatus("Unsupported");
-    hintText.textContent =
-      "SpeechRecognition isn’t supported in this browser. Try Chrome/Edge on desktop.";
+    alert("Speech Recognition not supported in this browser.");
     return;
   }
 
   if (!recognition) recognition = setupRecognition();
 
-  try {
-    recognition.start(); 
-  } catch (err) {
-    
-    setStatus("Already listening (or blocked).");
+  if (!listening) {
+    try {
+      recognition.start();
+    } catch (err) {
+      console.log("Already started or blocked");
+    }
   }
 }
 
-function stopListening() {
-  if (recognition && listening) {
-    recognition.stop();
+document.addEventListener("click", () => {
+  startListening();
+  if (bgMusic) {
+    bgMusic.volume = 0.3;
+    bgMusic.play().catch(e => console.log("Audio play failed:", e));
   }
-}
-
-
-startBtn.addEventListener("click", startListening);
-stopBtn.addEventListener("click", stopListening);
-
-
-setStatus("Idle");
-hintText.textContent =
-  "Tip: Mic access usually requires https or localhost. Use a local server instead of opening the file directly.";
+}, { once: true });

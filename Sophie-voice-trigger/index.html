@@ -4,32 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sophie Voice Trigger</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
     <video id="presentVideo" class="bg-present" autoplay muted loop playsinline>
-  <source src="assets/present.webm" type="video/webm" />
-</video>
-  <main class="wrap">
-    <h1>Say <span class="pill">Sophie!</span> 🎙️</h1>
-    <p class="sub">Click “Start Listening”, then say “Sophie!” to trigger the animation.</p>
+      <source src="assets/Idle.gif" type="video/gif" />
+    </video>
+  
+    <audio id="bgMusic" loop>
+      <source src="assets/music.mp3" type="audio/mp3" />
+    </audio>
 
-    <section class="panel">
-      <div id="orb" class="orb" aria-label="Animation orb"></div>
-
-      <div class="controls">
-        <button id="startBtn" class="btn primary">Start Listening</button>
-        <button id="stopBtn" class="btn" disabled>Stop</button>
-      </div>
-
-      <div class="status">
-        <div><strong>Status:</strong> <span id="statusText">Idle</span></div>
-        <div><strong>Heard:</strong> <span id="heardText">—</span></div>
-      </div>
-
-      <p class="hint" id="hintText"></p>
-    </section>
-  </main>
+    <div id="message" class="christmas-text">Merry Beartempmas!</div>
 
   <script src="app.js"></script>
 </body>

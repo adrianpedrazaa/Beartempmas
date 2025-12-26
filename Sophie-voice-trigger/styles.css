@@ -1,123 +1,89 @@
 :root {
   --bg: #0b0f19;
-  --card: rgba(255,255,255,0.06);
-  --border: rgba(255,255,255,0.12);
-  --text: rgba(255,255,255,0.9);
-  --muted: rgba(255,255,255,0.65);
 }
 
 * { box-sizing: border-box; }
+
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-family: 'Press Start 2P', system-ui, sans-serif; 
   background: radial-gradient(1200px 800px at 30% 20%, #18224a 0%, var(--bg) 55%);
-  color: var(--text);
   min-height: 100vh;
-  display: grid;
-  place-items: center;
-}
-
-.wrap { width: min(780px, 92vw); padding: 28px 0; }
-h1 { margin: 0 0 10px; font-size: clamp(28px, 4vw, 44px); }
-.sub { margin: 0 0 18px; color: var(--muted); }
-
-.pill {
-  padding: 4px 10px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: rgba(255,255,255,0.08);
-}
-
-.panel {
-  border: 1px solid var(--border);
-  background: var(--card);
-  border-radius: 18px;
-  padding: 20px;
-  backdrop-filter: blur(10px);
-}
-
-.orb {
-  width: 160px;
-  height: 160px;
-  border-radius: 50%;
-  margin: 18px auto 20px;
-  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95), rgba(255,255,255,0.12) 45%, rgba(255,255,255,0.06) 70%);
-  border: 1px solid rgba(255,255,255,0.22);
-  box-shadow: 0 18px 40px rgba(0,0,0,0.35);
-  transform: translateZ(0);
-}
-
-
-.orb.play {
-  animation: sophieBurst 900ms ease-in-out 1;
-}
-
-@keyframes sophieBurst {
-  0%   { transform: scale(1); filter: brightness(1); box-shadow: 0 18px 40px rgba(0,0,0,0.35); }
-  35%  { transform: scale(1.18); filter: brightness(1.4); box-shadow: 0 0 55px rgba(255,255,255,0.35); }
-  70%  { transform: scale(0.98); filter: brightness(1.1); box-shadow: 0 0 75px rgba(160, 210, 255, 0.35); }
-  100% { transform: scale(1); filter: brightness(1); box-shadow: 0 18px 40px rgba(0,0,0,0.35); }
-}
-
-.controls {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin: 6px 0 14px;
-}
-
-.btn {
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,0.08);
-  color: var(--text);
-  padding: 10px 14px;
-  border-radius: 12px;
+  overflow: hidden;
   cursor: pointer;
-  transition: transform 120ms ease, background 120ms ease;
-}
-.btn:hover { transform: translateY(-1px); background: rgba(255,255,255,0.12); }
-.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
-.btn.primary {
-  background: rgba(255,255,255,0.14);
 }
 
-.status {
-  display: grid;
-  gap: 6px;
-  color: var(--muted);
-  font-size: 14px;
-  border-top: 1px solid var(--border);
-  padding-top: 12px;
+
+.christmas-text {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  padding-top: 10vh;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: none;
+  
+  font-family: 'Press Start 2P', cursive; 
+  font-size: clamp(24px, 5vw, 60px);      
+  line-height: 1.5;
+  text-align: center;
+  
+  
+  color: #ff3333; 
+  text-shadow: 
+    4px 4px 0 #fff,   
+    -2px -2px 0 #fff,  
+    2px -2px 0 #fff,
+    -2px 2px 0 #fff,
+    2px 2px 0 #fff;
+    
+  
+  opacity: 0;
+  transform: scale(0.8) translateY(20px);
+  transition: opacity 0.6s step-end, transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.hint {
-  margin: 10px 0 0;
-  color: rgba(255,255,255,0.7);
-  font-size: 13px;
+
+.christmas-text.show {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+
+body::after {
+  content: url("assets/Active.gif") url("assets/Trigger.gif");
+  display: none;
 }
 
 body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: url("assets/background.gif") center / cover no-repeat;
+  background: url("assets/Idle.gif") center / cover no-repeat;
   background-size: contain;
   image-rendering: pixelated; 
   opacity: 1;             
-  filter: blur(0px);         
   z-index: -1;
   pointer-events: none;
 }
 
+body.Trigger::before {
+  background-image: url("assets/Trigger.gif");
+}
+
+body.Active::before {
+  background-image: url("assets/Active.gif");
+}
+
+
 .bg-present {
   position: fixed;
-  width: 420px;     /* size */
+  width: 420px;
   height: 420px;
-  right: 760px;      /* position */
+  right: 760px;
   bottom: -60px;
   object-fit: contain;
   z-index: 0;       
   pointer-events: none;
 }
-.wrap { position: relative; z-index: 1; } 
